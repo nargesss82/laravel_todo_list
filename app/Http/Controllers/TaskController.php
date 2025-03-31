@@ -49,7 +49,7 @@ class TaskController extends Controller
     {
 
         Task::create([
-           'user_id'=>1,
+           'user_id'=>Auth::id(),
            ...$request->validated()
         ]);
         session()->flash('message','Task created successfully');

@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Requests\UpdateUserRequest;
+use App\Models\Task;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -22,8 +26,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return view('users.index',compact('users'));
+        $users = User::paginate(10); // 10 کاربر در هر صفحه
+        return view('users.index', compact('users'));
     }
 
     /**
@@ -37,10 +41,11 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
         User::create([
-           ...$request->validated()
+           ...$request->validated(),
+            'password'=>bcrypt($request->validated('password')),
         ]);
         session()->flash('message','User created successfully');
         return redirect()->route('users.index');
@@ -51,7 +56,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('users.show',compact('user'));
+        $tasks=Task::all();
+        return view('users.show',compact('user','tasks'));
     }
 
     /**
@@ -65,7 +71,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
         $user->update($request->validated());
         session()->flash('message','User updated successfully');

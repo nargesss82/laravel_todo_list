@@ -29,12 +29,18 @@
                     <span class="text-red-600 font-bold">{{$message}}</span>
                     @enderror
                     <textarea id="description" name="description" rows="5"
-                              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
                     >{{old('description')}}</textarea>
                 </div>
-                <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
-                    Create
-                </button>
+                <div class="flex space-x-4 mt-6">
+                    <button type="submit" class="flex-1 bg-pink-500 text-white py-2 px-4 rounded-lg hover:bg-pink-600 transition">
+                        Create
+                    </button>
+                    <a href="{{ route('tasks.index') }}"
+                       class="flex-1 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-lg text-center transition">
+                        Cancel
+                    </a>
+                </div>
             </form>
         </div>
     </div>

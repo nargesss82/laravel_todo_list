@@ -18,7 +18,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
                 <p class="text-gray-500">Category:</p>
-                <p class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full inline-block">
+                <p class="px-3 py-1 bg-pink-100 text-pink-800 rounded-full inline-block">
                     {{ $task->category->category_name }}
                 </p>
             </div>
@@ -61,7 +61,7 @@
                     🗑️ Delete
                 </button>
             </form>
-            <a href="{{ route('tasks.index') }}"
+            <a href="{{ url()->previous() }}"
                class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition">
                 ↩️ Return
             </a>

@@ -8,7 +8,15 @@
 <body class="bg-gray-100">
 
 <!-- هدر -->
-@include('tasks.header')
+@if(request()->routeIs('users.*'))
+    @include('headers.user-header')
+@elseif(request()->routeIs('tasks.*'))
+    @include('headers.task-header')
+@elseif(request()->routeIs('categories.*'))
+    @include('headers.category-header')
+@else
+    @include('headers.default-header')
+@endif
 <!-- محتوای صفحه -->
 @yield('content')
 <!-- فوتر -->

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -22,7 +24,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return view('category.index',compact('categories'));
+        return view('categories.index',compact('categories'));
     }
 
     /**
@@ -30,19 +32,19 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('category.create');
+        return view('categories.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
         Category::create([
             ...$request->validated()
         ]);
         session()->flash('message','Category created successfully');
-        return redirect(route('category.index'));
+        return redirect(route('categories.index'));
     }
 
     /**
@@ -50,7 +52,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return view('category.show',compact('category'));
+        return view('categories.show',compact('category'));
     }
 
     /**
@@ -58,17 +60,17 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('category.edit',compact('category'));
+        return view('categories.edit',compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
         $category->update($request->validated());
         session()->flash('message','Category updated successfully');
-        return redirect(route('category.index'));
+        return redirect(route('categories.index'));
     }
 
     /**
@@ -78,6 +80,6 @@ class CategoryController extends Controller
     {
         $category->delete();
         session()->flash('message','Category deleted successfully');
-        return redirect(route('category.index'));
+        return redirect(route('categories.index'));
     }
 }
