@@ -12,21 +12,61 @@
             </p>
         </div>
 
-        <!-- تصویر - مرکز چین شده -->
-        <div class="mb-12 max-w-md mx-auto">
-            <img src="https://illustrations.popsy.co/amber/task-list.svg" alt="Todo List Illustration" class="w-full h-auto">
+        <!-- بنر مصور ویژگی‌ها - برداری و اختصاصی -->
+        <div class="mb-12 max-w-md w-full mx-auto bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-pink-100 flex flex-col items-center">
+            <div class="w-full bg-pink-50 rounded-xl p-5 border border-pink-100/60 shadow-inner">
+                <div class="flex items-center justify-between mb-4 pb-3 border-b border-pink-200/50">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full bg-red-400"></span>
+                        <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
+                        <span class="w-3 h-3 rounded-full bg-green-400"></span>
+                        <span class="text-xs font-semibold text-pink-700 ml-2">Today's Focus</span>
+                    </div>
+                    <span class="text-xs font-medium bg-pink-200 text-pink-800 px-2 py-0.5 rounded-full">3 Tasks</span>
+                </div>
+                <div class="space-y-2.5">
+                    <div class="flex items-center justify-between bg-white p-3 rounded-lg shadow-sm border border-gray-100">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-5 h-5 rounded-md bg-green-100 text-green-600 flex items-center justify-center text-xs">✓</span>
+                            <span class="text-sm font-medium text-gray-700 line-through text-gray-400">Design RESTful API routes</span>
+                        </div>
+                        <span class="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded">Done</span>
+                    </div>
+                    <div class="flex items-center justify-between bg-white p-3 rounded-lg shadow-sm border border-gray-100">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-5 h-5 rounded-md bg-pink-100 text-pink-600 flex items-center justify-center text-xs">●</span>
+                            <span class="text-sm font-medium text-gray-800">Implement Eloquent Relationships</span>
+                        </div>
+                        <span class="text-[10px] bg-pink-100 text-pink-700 px-2 py-0.5 rounded font-medium">In Progress</span>
+                    </div>
+                    <div class="flex items-center justify-between bg-white p-3 rounded-lg shadow-sm border border-gray-100">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-5 h-5 rounded-md bg-gray-100 text-gray-400 flex items-center justify-center text-xs">○</span>
+                            <span class="text-sm font-medium text-gray-600">Publish Project on LinkedIn</span>
+                        </div>
+                        <span class="text-[10px] bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded">Next</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- دکمه‌ها - مرکز چین شده -->
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center w-full max-w-xs sm:max-w-md mx-auto mb-16">
-            <a href="{{ route('users.create') }}"
-               class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition duration-300 text-center w-full sm:w-auto">
-                Register
-            </a>
-            <a href="{{ route('login') }}"
-               class="bg-white hover:bg-gray-100 text-pink-600 font-bold py-3 px-6 rounded-lg border border-pink-200 shadow-sm hover:shadow-md transition duration-300 text-center w-full sm:w-auto">
-                Login
-            </a>
+            @auth
+                <a href="{{ route('tasks.index') }}"
+                   class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition duration-300 text-center w-full sm:w-auto">
+                    Go to Tasks 🚀
+                </a>
+            @else
+                <a href="{{ route('users.create') }}"
+                   class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition duration-300 text-center w-full sm:w-auto">
+                    Register
+                </a>
+                <a href="{{ route('login') }}"
+                   class="bg-white hover:bg-gray-100 text-pink-600 font-bold py-3 px-6 rounded-lg border border-pink-200 shadow-sm hover:shadow-md transition duration-300 text-center w-full sm:w-auto">
+                    Login
+                </a>
+            @endauth
         </div>
 
         <!-- ویژگی‌ها - مرکز چین شده -->

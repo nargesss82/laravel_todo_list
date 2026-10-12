@@ -7,15 +7,15 @@ use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
-class CategoryController extends Controller
+class CategoryController extends Controller implements HasMiddleware
 {
-
-    public static function middleware()
+    public static function middleware(): array
     {
         return [
-            new Middleware('auth',except: ['show','index'])
+            new Middleware('auth', except: ['show', 'index'])
         ];
     }
     /**

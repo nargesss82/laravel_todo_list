@@ -17,7 +17,14 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'category_name' => fake()->unique()->randomElement(['work', 'personal', 'education']),
+            'category_name' => fake()->unique()->randomElement([
+                'Work & Office',
+                'Personal Goals',
+                'Learning & Study',
+                'Development Projects',
+                'Health & Fitness',
+                'Finance & Bills'
+            ]),
         ];
     }
 }

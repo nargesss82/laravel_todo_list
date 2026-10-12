@@ -12,23 +12,21 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 
-class TaskController extends Controller
+class TaskController extends Controller implements HasMiddleware
 {
-//    public static function middleware()
-//    {
-//        return [
-//            new Middleware('auth',except: ['show','index'])
-//        ];
-//    }
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('auth', except: ['index', 'show'])
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $categories = Category::all()->map(function($category) {
-            $category->tasks = $category->tasks ?? [];
-            return $category;
-        });
+        $categories = Category::with('tasks')->get();
 
         return view('tasks.index', compact('categories'));
     }

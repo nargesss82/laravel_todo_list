@@ -3,35 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Models\Task;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 
-class UserController extends Controller
+class UserController extends Controller implements HasMiddleware
 {
-
-    public static function middleware()
+    public static function middleware(): array
     {
         return [
-            new Middleware('auth',except: ['show','index'])
+            new Middleware('auth', except: ['create', 'store', 'show', 'index'])
         ];
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $users = User::paginate(10); // 10 کاربر در هر صفحه
+        $users = User::paginate(10);
         return view('users.index', compact('users'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new resource (Register).
      */
     public function create()
     {
@@ -39,16 +38,15 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in storage (Register).
      */
     public function store(StoreUserRequest $request)
     {
-        User::create([
-           ...$request->validated(),
-            'password'=>bcrypt($request->validated('password')),
-        ]);
-        session()->flash('message','User created successfully');
-        return redirect()->route('users.index');
+        $user = User::create($request->validated());
+        Auth::login($user);
+
+        session()->flash('message', 'Registration successful! Welcome to ToDo System.');
+        return redirect()->route('tasks.index');
     }
 
     /**
@@ -56,8 +54,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $tasks=Task::all();
-        return view('users.show',compact('user','tasks'));
+        $user->load('tasks.category');
+        return view('users.show', compact('user'));
     }
 
     /**
@@ -65,7 +63,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('users.edit',compact('user'));
+        return view('users.edit', compact('user'));
     }
 
     /**
@@ -73,8 +71,13 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $user->update($request->validated());
-        session()->flash('message','User updated successfully');
+        $data = $request->validated();
+        if (empty($data['password'])) {
+            unset($data['password']);
+        }
+        $user->update($data);
+
+        session()->flash('message', 'User updated successfully');
         return redirect()->route('users.index');
     }
 
@@ -84,7 +87,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        session()->flash('message','User deleted successfully');
+        session()->flash('message', 'User deleted successfully');
         return redirect()->route('users.index');
     }
 }

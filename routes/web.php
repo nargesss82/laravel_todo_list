@@ -21,3 +21,23 @@ Route::get('/login',[LoginController::class,'show'])->name('login');
 Route::post('/login',[LoginController::class,'login']);
 
 Route::post('/logout',[LoginController::class,'logout'])->name('logout');
+
+if (app()->environment('local')) {
+    Route::get('/preview/tasks', function () {
+        Illuminate\Support\Facades\Auth::loginUsingId(1);
+        return app(TaskController::class)->index();
+    });
+    Route::get('/preview/create-task', function () {
+        Illuminate\Support\Facades\Auth::loginUsingId(1);
+        return app(TaskController::class)->create();
+    });
+    Route::get('/preview/categories', function () {
+        Illuminate\Support\Facades\Auth::loginUsingId(1);
+        return app(CategoryController::class)->index();
+    });
+    Route::get('/preview/users', function () {
+        Illuminate\Support\Facades\Auth::loginUsingId(1);
+        return app(UserController::class)->index();
+    });
+}
+

@@ -20,11 +20,11 @@ class TaskFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::inRandomOrder()->first()->id,
-            'category_id' => Category::inRandomOrder()->first()->id,
-            'title'=>fake()->word(),
-            'description'=>fake()->realText(),
-            'completed'=>false,
+            'user_id' => fn() => User::inRandomOrder()->first()?->id ?? User::factory()->create()->id,
+            'category_id' => fn() => Category::inRandomOrder()->first()?->id ?? Category::factory()->create()->id,
+            'title' => rtrim(fake()->sentence(4), '.'),
+            'description' => fake()->sentence(10),
+            'completed' => fake()->boolean(30),
         ];
     }
 }

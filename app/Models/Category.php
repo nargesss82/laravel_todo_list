@@ -18,9 +18,14 @@ class Category extends Model
     {
         return  CategoryFactory::new();
     }
-    public function task():HasMany
+    public function tasks(): HasMany
     {
         return $this->hasMany(Task::class);
+    }
+
+    public function task(): HasMany
+    {
+        return $this->tasks();
     }
 }
 

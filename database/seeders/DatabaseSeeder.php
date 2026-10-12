@@ -15,32 +15,27 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // ایجاد 5 کاربر
-        $users = User::factory()->count(5)->create();
+        // اکانت تستی اصلی برای ورود
+        $mainUser = User::firstOrCreate(
+            ['email' => 'test@example.com'],
+            ['name' => 'Demo User', 'password' => 'password']
+        );
 
-        // ایجاد 3 دسته‌بندی
-        $categories = Category::factory()->count(3)->create();
+        // ایجاد سایر کاربران
+        $otherUsers = User::factory()->count(4)->create();
+        $allUsers = collect([$mainUser])->concat($otherUsers);
 
-        // برای هر کاربر، 5 تا  تسک ایجاد کنید
-        $users->each(function ($user) use ($categories) {
+        // ایجاد دسته‌بندی‌ها
+        $categories = Category::factory()->count(4)->create();
+
+        // ایجاد تسک برای کاربر اصلی و سایر کاربران
+        $allUsers->each(function ($user) use ($categories) {
             Task::factory()
-                ->count(5)
+                ->count(3)
                 ->create([
                     'user_id' => $user->id,
                     'category_id' => $categories->random()->id,
                 ]);
-        });
-
-        // برای هر دسته‌بندی حداقل 2 تسک داشته باشد
-        $categories->each(function ($category) {
-            if ($category->task()->count() < 2) {
-                Task::factory()
-                    ->count(2 - $category->task()->count())
-                    ->create([
-                        'category_id' => $category->id,
-                        'user_id' => User::inRandomOrder()->first()->id,
-                    ]);
-            }
         });
     }
 }
